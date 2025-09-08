@@ -4,11 +4,10 @@
 "align" .Params.heading.align "date" .Params.heading.date)}}
 
 <main class="py-6">
-    {{ $pages := where $.Site.RegularPages "Type" "posts" }}
-    {{ $limit := .Site.Params.homepage.postLimit | default 3 }}
-    {{ if gt (len $pages) 0 }}
+    {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") }}
+    {{ if gt (len $paginator.Pages) 0 }}
     <div class="mb-12">
-        {{ range first $limit $pages }}
+        {{ range $paginator.Pages }}
         <div class="mb-12">
             {{ partial "blog/post-row.html" (dict
             "title" .Params.title
@@ -26,5 +25,7 @@
     {{ end }}
     {{ .Content }}
 </main>
+
+{{ partial "paginator/paginator.html" . }}
 
 {{ end }}
